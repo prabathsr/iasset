@@ -1,0 +1,77 @@
+﻿<div class="container">
+    <div>
+        <h2>Weather View</h2>
+        <br />
+    </div>    
+    <div class="row">
+        <div class="col-xs-6 col-sm-4  col-lg-3 narrowrightpadding">
+            <div class="form-group">
+                <label for="country_name">Country</label>
+                <div class="input-group">
+                    <input id="country_name" type="text" class="form-control" placeholder="Please enter country name" (change)="loadCities($event.target.value)" ([ngModel])="countryName"/>
+                    <span class="input-group-btn"><button type="button" class="btn btn-default">Search</button></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="city_name">City</label>
+                &nbsp;<label class="loader" *ngIf="isLoadingCities">Loading...</label>
+                <label class="error-text" *ngIf="countryName && !cities?.length && !isLoadingCities">&nbsp;No cities found for '{{countryName}}'</label>
+                <select id="city_name" class="form-control" size="14" [(ngModel)]="cityCountryName" (ngModelChange)="showWeatherInfo($event)">
+                    <option *ngFor="let city of cities">{{city}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-8 col-lg-7 noleftpadding">
+            <div class="loader" *ngIf="isLoadingWeatherInfo">Loading...</div>
+            <div class="panel panel-default" *ngIf="!isLoadingWeatherInfo && cityName">
+                <div class="panel-body">
+                    <div *ngIf="country && !(country?.city)" class="nodata">
+                        <label><strong><h4>No data available</h4></strong></label>
+                    </div>
+                    <table class="table" *ngIf="country?.city">
+                        <tbody>
+                        <tr>
+                            <td style="border-style: none" colspan="2">
+                                <h2>{{cityName}}</h2>
+                                Data collected at {{ getTimeStamp(country.city.time) | date: 'mediumTime' }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="col-sm-3">Wind Speed</td>
+                            <td>{{country.city.windSpeed}} Km/h</td>
+                        </tr>
+                        <tr>
+                            <td>Wind Direction</td>
+                            <td>{{country.city.windDirection}} degrees</td>
+                        </tr>
+                        <tr>
+                            <td>Visibility</td>
+                            <td>{{country.city.visibility}}</td>
+                        </tr>
+                        <tr>
+                            <td>Sky Conditions</td>
+                            <td>{{country.city.skyConditions}}</td>
+                        </tr>
+                        <tr>
+                            <td>Temperature</td>
+                            <td>{{country.city.temperature}} °C</td>
+                        </tr>
+                        <tr>
+                            <td>Dew Point</td>
+                            <td>{{country.city.dewPoint}}</td>
+                        </tr>
+                        <tr>
+                            <td>Humidity</td>
+                            <td>{{country.city.humidity}}</td>
+                        </tr>
+                        <tr>
+                            <td>Pressure</td>
+                            <td>{{country.city.pressure}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
